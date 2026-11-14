@@ -1,0 +1,18 @@
+$ python3 gen_graph.py --nodes 3 --degree 0 --feat-dim 7 --communities 1 --seed 2025 --out empty.bin
+gen_graph.py:91: RuntimeWarning: Mean of empty slice.
+  cross = (comm_id[src] != comm_id[dst]).mean()
+/home/dmq/.local/lib/python3.7/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+gen_graph.py:97: RuntimeWarning: invalid value encountered in true_divide
+  print(f"  度数偏斜    : max/mean = {deg.max() / deg.mean():.1f}")
+gen_graph.py:104: RuntimeWarning: invalid value encountered in double_scalars
+  loads.append(f"P={p_count}: {w.max() / w.mean():.2f}")
+已写出 empty.bin
+  节点数      : 3
+  有向边数    : 0
+  平均度数    : 0.00 (最大 0, 中位 0, 孤立点 3)
+  度数偏斜    : max/mean = nan
+  特征维度    : 7
+  跨社区边    : nan%
+  block 负载  : max/mean  P=4: nan  P=8: nan
+  文件大小    : 0.0 MB

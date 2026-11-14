@@ -1,0 +1,15 @@
+# started on Sat Nov 14 13:52:12 2026
+
+
+ Performance counter stats for './main --graph graph.bin --only mpi1 --no-check --warmup 1 --repeats 10':
+
+          5,369.23 msec task-clock:u              #    0.969 CPUs utilized          
+                 0      context-switches:u        #    0.000 K/sec                  
+            10,605      page-faults:u             #    0.002 M/sec                  
+
+       5.539799792 seconds time elapsed
+
+       4.913150000 seconds user
+       0.326117000 seconds sys
+
+

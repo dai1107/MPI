@@ -1,0 +1,23 @@
+$ mpirun -f hostfile_spread -np 4 ./main --graph intra010.bin --part block --layers 2 --hidden 64 --warmup 1 --repeats 10
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+PLAN rank=0 local=50000 edges=1001269 halo=148262 interior=0 send=148356 boundary=50000
+PLAN rank=1 local=50000 edges=999960 halo=148357 interior=0 send=148267 boundary=50000
+PLAN rank=2 local=50000 edges=998961 halo=148347 interior=0 send=148280 boundary=50000
+PLAN rank=3 local=50000 edges=999550 halo=148317 interior=0 send=148380 boundary=50000
+============ MPI 分布式 GNN 推理 ============
+图          : intra010.bin
+节点/边     : 200000 / 3999740    特征维度: 64
+进程数      : 4    划分: block    层数: 2    隐层: 64
+跨进程边    : 2702750 / 3999740  (67.6%)
+halo 节点   : 合计 593283, 单进程最多 148357 (本地约 50000)
+划分+建计划 : 0.0337 s
+串行参考    : 1.7375 s (单进程整图 2 层)
+--------------------------------------------
+mpi1        中位 0.5558 s  最小 0.5478  最大 0.5781  加速比 3.13  效率 0.78  检查通过
+mpi2        中位 0.5566 s  最小 0.5374  最大 0.5867  加速比 3.12  效率 0.78  检查通过
+allgather   中位 0.5319 s  最小 0.5172  最大 0.5461  加速比 3.27  效率 0.82  检查通过

@@ -1,0 +1,10 @@
+$ python3 gen_graph.py --nodes 200000 --degree 20 --feat-dim 64 --communities 8 --seed 2025 --out graph.bin
+已写出 graph.bin
+  节点数      : 200000
+  有向边数    : 3999004
+  平均度数    : 20.00 (最大 44, 中位 20, 孤立点 0)
+  度数偏斜    : max/mean = 2.2
+  特征维度    : 64
+  跨社区边    : 26.3%
+  block 负载  : max/mean  P=4: 1.00  P=8: 1.00
+  文件大小    : 64.8 MB

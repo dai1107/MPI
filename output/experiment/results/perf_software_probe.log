@@ -1,0 +1,13 @@
+
+ Performance counter stats for 'true':
+
+              0.17 msec task-clock:u              #    0.525 CPUs utilized          
+                 0      context-switches:u        #    0.000 K/sec                  
+                23      page-faults:u             #    0.135 M/sec                  
+
+       0.000323614 seconds time elapsed
+
+       0.000324000 seconds user
+       0.000000000 seconds sys
+
+

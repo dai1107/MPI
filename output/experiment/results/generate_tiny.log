@@ -1,0 +1,10 @@
+$ python3 gen_graph.py --nodes 203 --degree 1 --feat-dim 7 --communities 7 --seed 2025 --out tiny.bin
+已写出 tiny.bin
+  节点数      : 203
+  有向边数    : 198
+  平均度数    : 0.98 (最大 5, 中位 1, 孤立点 77)
+  度数偏斜    : max/mean = 5.1
+  特征维度    : 7
+  跨社区边    : 27.3%
+  block 负载  : max/mean  P=4: 1.19  P=8: 1.33
+  文件大小    : 0.0 MB

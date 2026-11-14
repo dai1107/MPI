@@ -1,0 +1,124 @@
+2026-11-14T13:42:10+08:00
+Linux ecs-hw-0001 4.19.90-2110.8.0.0119.oe1.aarch64 #1 SMP Wed Oct 27 10:35:51 UTC 2021 aarch64 aarch64 aarch64 GNU/Linux
+NAME="openEuler"
+VERSION="20.03 (LTS)"
+ID="openEuler"
+VERSION_ID="20.03"
+PRETTY_NAME="openEuler 20.03 (LTS)"
+ANSI_COLOR="0;31"
+
+Architecture:                    aarch64
+CPU op-mode(s):                  64-bit
+Byte Order:                      Little Endian
+CPU(s):                          2
+On-line CPU(s) list:             0,1
+Thread(s) per core:              1
+Core(s) per socket:              2
+Socket(s):                       1
+NUMA node(s):                    1
+Vendor ID:                       HiSilicon
+Model:                           0
+Stepping:                        0x0
+CPU max MHz:                     2900.0000
+CPU min MHz:                     2900.0000
+BogoMIPS:                        200.00
+L1d cache:                       128 KiB
+L1i cache:                       128 KiB
+L2 cache:                        1 MiB
+L3 cache:                        32 MiB
+NUMA node0 CPU(s):               0,1
+Vulnerability Itlb multihit:     Not affected
+Vulnerability L1tf:              Not affected
+Vulnerability Mds:               Not affected
+Vulnerability Meltdown:          Not affected
+Vulnerability Spec store bypass: Mitigation; Speculative Store Bypass disabled via prctl
+Vulnerability Spectre v1:        Mitigation; __user pointer sanitization
+Vulnerability Spectre v2:        Not affected
+Vulnerability Srbds:             Not affected
+Vulnerability Tsx async abort:   Not affected
+Flags:                           fp asimd evtstrm aes pmull sha1 sha2 crc32 atomics fphp asimdhp cpuid asimdrdm jscvt fcma lrcpc dcpop sha3 sm3 sm4 asimddp sha512 sve asimdfhm dit uscat ilrcpc flagm ssbs
+              total        used        free      shared  buff/cache   available
+Mem:           2844         639        1379           9         825        1790
+Swap:             0           0           0
+HYDRA build details:
+    Version:                                 3.3.2
+    Release Date:                            Tue Nov 12 21:23:16 CST 2019
+    CC:                              gcc    
+    CXX:                             g++    
+    F77:                             gfortran   
+    F90:                             gfortran   
+    Configure options:                       '--disable-option-checking' '--prefix=/usr/local/mpich' '--cache-file=/dev/null' '--srcdir=.' 'CC=gcc' 'CFLAGS= -O2' 'LDFLAGS=' 'LIBS=' 'CPPFLAGS= -I/home/dmq/.mpi-setup/mpich-3.3.2/src/mpl/include -I/home/dmq/.mpi-setup/mpich-3.3.2/src/mpl/include -I/home/dmq/.mpi-setup/mpich-3.3.2/src/openpa/src -I/home/dmq/.mpi-setup/mpich-3.3.2/src/openpa/src -D_REENTRANT -I/home/dmq/.mpi-setup/mpich-3.3.2/src/mpi/romio/include' 'MPLLIBNAME=mpl'
+    Process Manager:                         pmi
+    Launchers available:                     ssh rsh fork slurm ll lsf sge manual persist
+    Topology libraries available:            hwloc
+    Resource management kernels available:   user slurm ll lsf sge pbs cobalt
+    Checkpointing libraries available:       
+    Demux engines available:                 poll select
+gcc (GCC) 7.3.0
+Copyright (C) 2017 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+Python 3.7.9
+numpy 1.21.6
+perf version 4.19.90-2110.8.0.0119.oe1.aarch64
+  alignment-faults                                   [Software event]
+  bpf-output                                         [Software event]
+  context-switches OR cs                             [Software event]
+  cpu-clock                                          [Software event]
+  cpu-migrations OR migrations                       [Software event]
+  dummy                                              [Software event]
+  emulation-faults                                   [Software event]
+  major-faults                                       [Software event]
+  minor-faults                                       [Software event]
+  page-faults OR faults                              [Software event]
+  task-clock                                         [Software event]
+  rNNN                                               [Raw hardware event descriptor]
+  cpu/t1=v1[,t2=v2,t3 ...]/modifier                  [Raw hardware event descriptor]
+  mem:<addr>[/len][:access]                          [Hardware breakpoint]
+2
+76d9dd8b8a2e4f15f75af065fba01c75b5a8b8fe8b0d612c9a4ec9f55323da20  main
+32d1dec537e6ab2377746bcb238ecac7fed34bad20f9c0aef3ab058742f4933b  main.cpp
+f20b2a6d3c9b38f276e164869813d6af49d857e4bfecd339909233618cbd2f01  main.h
+
+Authorized users only. All activities may be monitored and reported.
+ecs-hw-0001
+2
+              total        used        free      shared  buff/cache   available
+Mem:           2844         646        1372           9         825        1783
+76d9dd8b8a2e4f15f75af065fba01c75b5a8b8fe8b0d612c9a4ec9f55323da20  /home/dmq/lab3-20261114/main
+
+Authorized users only. All activities may be monitored and reported.
+ecs-hw-0002
+2
+              total        used        free      shared  buff/cache   available
+Mem:           2844         569        1777           9         497        1867
+76d9dd8b8a2e4f15f75af065fba01c75b5a8b8fe8b0d612c9a4ec9f55323da20  /home/dmq/lab3-20261114/main
+
+Authorized users only. All activities may be monitored and reported.
+ecs-hw-0003
+2
+              total        used        free      shared  buff/cache   available
+Mem:           2844         321        2033           9         490        2115
+76d9dd8b8a2e4f15f75af065fba01c75b5a8b8fe8b0d612c9a4ec9f55323da20  /home/dmq/lab3-20261114/main
+
+Authorized users only. All activities may be monitored and reported.
+ecs-hw-0004
+2
+              total        used        free      shared  buff/cache   available
+Mem:           2844         311        2026           9         507        2125
+76d9dd8b8a2e4f15f75af065fba01c75b5a8b8fe8b0d612c9a4ec9f55323da20  /home/dmq/lab3-20261114/main
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+rank=0 size=4 host=ecs-hw-0001 sum=6
+rank=3 size=4 host=ecs-hw-0004 sum=6
+rank=2 size=4 host=ecs-hw-0003 sum=6
+rank=1 size=4 host=ecs-hw-0002 sum=6
+rank=0 size=4 host=ecs-hw-0001 sum=6
+rank=2 size=4 host=ecs-hw-0001 sum=6
+rank=1 size=4 host=ecs-hw-0001 sum=6
+rank=3 size=4 host=ecs-hw-0001 sum=6

@@ -1,0 +1,15 @@
+# started on Sat Nov 14 13:52:23 2026
+
+
+ Performance counter stats for './main --graph graph.bin --only allgather --no-check --warmup 1 --repeats 10':
+
+          5,461.02 msec task-clock:u              #    0.971 CPUs utilized          
+                 0      context-switches:u        #    0.000 K/sec                  
+            20,236      page-faults:u             #    0.004 M/sec                  
+
+       5.624481808 seconds time elapsed
+
+       4.971580000 seconds user
+       0.422258000 seconds sys
+
+

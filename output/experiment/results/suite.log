@@ -1,0 +1,800 @@
+$ python3 gen_graph.py --nodes 203 --degree 1 --feat-dim 7 --communities 7 --seed 2025 --out tiny.bin
+已写出 tiny.bin
+  节点数      : 203
+  有向边数    : 198
+  平均度数    : 0.98 (最大 5, 中位 1, 孤立点 77)
+  度数偏斜    : max/mean = 5.1
+  特征维度    : 7
+  跨社区边    : 27.3%
+  block 负载  : max/mean  P=4: 1.19  P=8: 1.33
+  文件大小    : 0.0 MB
+
+DONE generate_tiny.log 0.1s
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+$ python3 gen_graph.py --nodes 3 --degree 0 --feat-dim 7 --communities 1 --seed 2025 --out empty.bin
+gen_graph.py:91: RuntimeWarning: Mean of empty slice.
+  cross = (comm_id[src] != comm_id[dst]).mean()
+/home/dmq/.local/lib/python3.7/site-packages/numpy/core/_methods.py:189: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+gen_graph.py:97: RuntimeWarning: invalid value encountered in true_divide
+  print(f"  度数偏斜    : max/mean = {deg.max() / deg.mean():.1f}")
+gen_graph.py:104: RuntimeWarning: invalid value encountered in double_scalars
+  loads.append(f"P={p_count}: {w.max() / w.mean():.2f}")
+已写出 empty.bin
+  节点数      : 3
+  有向边数    : 0
+  平均度数    : 0.00 (最大 0, 中位 0, 孤立点 3)
+  度数偏斜    : max/mean = nan
+  特征维度    : 7
+  跨社区边    : nan%
+  block 负载  : max/mean  P=4: nan  P=8: nan
+  文件大小    : 0.0 MB
+
+DONE generate_empty.log 0.1s
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+$ mpirun -f hostfile_spread -np 1 ./main --graph tiny.bin --part block --layers 1 --hidden 11 --warmup 1 --repeats 10
+PLAN rank=0 local=203 edges=198 halo=0 interior=203 send=0 boundary=0
+============ MPI 分布式 GNN 推理 ============
+图          : tiny.bin
+节点/边     : 203 / 198    特征维度: 7
+进程数      : 1    划分: block    层数: 1    隐层: 11
+跨进程边    : 0 / 198  (0.0%)
+halo 节点   : 合计 0, 单进程最多 0 (本地约 203)
+划分+建计划 : 0.0000 s
+串行参考    : 0.0000 s (单进程整图 1 层)
+--------------------------------------------
+mpi1        中位 0.0000 s  最小 0.0000  最大 0.0000  加速比 1.12  效率 1.12  检查通过
+mpi2        中位 0.0000 s  最小 0.0000  最大 0.0000  加速比 1.14  效率 1.14  检查通过
+allgather   中位 0.0000 s  最小 0.0000  最大 0.0000  加速比 1.07  效率 1.07  检查通过
+
+DONE check_block_p1_l1.log 0.0s
+$ mpirun -f hostfile_spread -np 1 ./main --graph tiny.bin --part block --layers 3 --hidden 11 --warmup 1 --repeats 10
+PLAN rank=0 local=203 edges=198 halo=0 interior=203 send=0 boundary=0
+============ MPI 分布式 GNN 推理 ============
+图          : tiny.bin
+节点/边     : 203 / 198    特征维度: 7
+进程数      : 1    划分: block    层数: 3    隐层: 11
+跨进程边    : 0 / 198  (0.0%)
+halo 节点   : 合计 0, 单进程最多 0 (本地约 203)
+划分+建计划 : 0.0000 s
+串行参考    : 0.0001 s (单进程整图 3 层)
+--------------------------------------------
+mpi1        中位 0.0001 s  最小 0.0001  最大 0.0001  加速比 1.33  效率 1.33  检查通过
+mpi2        中位 0.0001 s  最小 0.0001  最大 0.0001  加速比 1.34  效率 1.34  检查通过
+allgather   中位 0.0001 s  最小 0.0001  最大 0.0001  加速比 1.27  效率 1.27  检查通过
+
+DONE check_block_p1_l3.log 0.0s
+$ mpirun -f hostfile_spread -np 4 ./main --graph tiny.bin --part block --layers 1 --hidden 11 --warmup 1 --repeats 10
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+PLAN rank=0 local=51 edges=43 halo=14 interior=36 send=16 boundary=15
+PLAN rank=1 local=51 edges=60 halo=16 interior=38 send=13 boundary=13
+PLAN rank=2 local=51 edges=44 halo=15 interior=36 send=17 boundary=15
+PLAN rank=3 local=50 edges=51 halo=11 interior=40 send=10 boundary=10
+============ MPI 分布式 GNN 推理 ============
+图          : tiny.bin
+节点/边     : 203 / 198    特征维度: 7
+进程数      : 4    划分: block    层数: 1    隐层: 11
+跨进程边    : 64 / 198  (32.3%)
+halo 节点   : 合计 56, 单进程最多 16 (本地约 50)
+划分+建计划 : 0.0095 s
+串行参考    : 0.0000 s (单进程整图 1 层)
+--------------------------------------------
+mpi1        中位 0.0002 s  最小 0.0002  最大 0.0002  加速比 0.08  效率 0.02  检查通过
+mpi2        中位 0.0001 s  最小 0.0001  最大 0.0002  加速比 0.10  效率 0.03  检查通过
+allgather   中位 0.0002 s  最小 0.0002  最大 0.0041  加速比 0.08  效率 0.02  检查通过
+
+DONE check_block_p4_l1.log 0.2s
+$ mpirun -f hostfile_spread -np 4 ./main --graph tiny.bin --part block --layers 3 --hidden 11 --warmup 1 --repeats 10
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+PLAN rank=0 local=51 edges=43 halo=14 interior=36 send=16 boundary=15
+PLAN rank=1 local=51 edges=60 halo=16 interior=38 send=13 boundary=13
+PLAN rank=2 local=51 edges=44 halo=15 interior=36 send=17 boundary=15
+PLAN rank=3 local=50 edges=51 halo=11 interior=40 send=10 boundary=10
+============ MPI 分布式 GNN 推理 ============
+图          : tiny.bin
+节点/边     : 203 / 198    特征维度: 7
+进程数      : 4    划分: block    层数: 3    隐层: 11
+跨进程边    : 64 / 198  (32.3%)
+halo 节点   : 合计 56, 单进程最多 16 (本地约 50)
+划分+建计划 : 0.0014 s
+串行参考    : 0.0001 s (单进程整图 3 层)
+--------------------------------------------
+mpi1        中位 0.0003 s  最小 0.0003  最大 0.0004  加速比 0.20  效率 0.05  检查通过
+mpi2        中位 0.0003 s  最小 0.0003  最大 0.0043  加速比 0.21  效率 0.05  检查通过
+allgather   中位 0.0005 s  最小 0.0005  最大 0.0045  加速比 0.13  效率 0.03  检查通过
+
+DONE check_block_p4_l3.log 0.2s
+$ mpirun -f hostfile_spread -np 4 ./main --graph empty.bin --part block --layers 3 --hidden 11 --warmup 1 --repeats 10
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+PLAN rank=0 local=1 edges=0 halo=0 interior=1 send=0 boundary=0
+PLAN rank=1 local=1 edges=0 halo=0 interior=1 send=0 boundary=0
+PLAN rank=2 local=1 edges=0 halo=0 interior=1 send=0 boundary=0
+PLAN rank=3 local=0 edges=0 halo=0 interior=0 send=0 boundary=0
+============ MPI 分布式 GNN 推理 ============
+图          : empty.bin
+节点/边     : 3 / 0    特征维度: 7
+进程数      : 4    划分: block    层数: 3    隐层: 11
+跨进程边    : 0 / 0  (0.0%)
+halo 节点   : 合计 0, 单进程最多 0 (本地约 0)
+划分+建计划 : 0.0014 s
+串行参考    : 0.0000 s (单进程整图 3 层)
+--------------------------------------------
+mpi1        中位 0.0000 s  最小 0.0000  最大 0.0000  加速比 1.14  效率 0.29  检查通过
+mpi2        中位 0.0000 s  最小 0.0000  最大 0.0000  加速比 1.60  效率 0.40  检查通过
+allgather   中位 0.0004 s  最小 0.0004  最大 0.0005  加速比 0.00  效率 0.00  检查通过
+
+DONE check_empty_block.log 0.2s
+$ mpirun -f hostfile_spread -np 1 ./main --graph tiny.bin --part cyclic --layers 1 --hidden 11 --warmup 1 --repeats 10
+PLAN rank=0 local=203 edges=198 halo=0 interior=203 send=0 boundary=0
+============ MPI 分布式 GNN 推理 ============
+图          : tiny.bin
+节点/边     : 203 / 198    特征维度: 7
+进程数      : 1    划分: cyclic    层数: 1    隐层: 11
+跨进程边    : 0 / 198  (0.0%)
+halo 节点   : 合计 0, 单进程最多 0 (本地约 203)
+划分+建计划 : 0.0000 s
+串行参考    : 0.0000 s (单进程整图 1 层)
+--------------------------------------------
+mpi1        中位 0.0000 s  最小 0.0000  最大 0.0000  加速比 1.10  效率 1.10  检查通过
+mpi2        中位 0.0000 s  最小 0.0000  最大 0.0000  加速比 1.10  效率 1.10  检查通过
+allgather   中位 0.0000 s  最小 0.0000  最大 0.0000  加速比 1.04  效率 1.04  检查通过
+
+DONE check_cyclic_p1_l1.log 0.0s
+$ mpirun -f hostfile_spread -np 1 ./main --graph tiny.bin --part cyclic --layers 3 --hidden 11 --warmup 1 --repeats 10
+PLAN rank=0 local=203 edges=198 halo=0 interior=203 send=0 boundary=0
+============ MPI 分布式 GNN 推理 ============
+图          : tiny.bin
+节点/边     : 203 / 198    特征维度: 7
+进程数      : 1    划分: cyclic    层数: 3    隐层: 11
+跨进程边    : 0 / 198  (0.0%)
+halo 节点   : 合计 0, 单进程最多 0 (本地约 203)
+划分+建计划 : 0.0000 s
+串行参考    : 0.0001 s (单进程整图 3 层)
+--------------------------------------------
+mpi1        中位 0.0001 s  最小 0.0001  最大 0.0001  加速比 1.35  效率 1.35  检查通过
+mpi2        中位 0.0001 s  最小 0.0001  最大 0.0001  加速比 1.36  效率 1.36  检查通过
+allgather   中位 0.0001 s  最小 0.0001  最大 0.0001  加速比 1.29  效率 1.29  检查通过
+
+DONE check_cyclic_p1_l3.log 0.0s
+$ mpirun -f hostfile_spread -np 4 ./main --graph tiny.bin --part cyclic --layers 1 --hidden 11 --warmup 1 --repeats 10
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+PLAN rank=0 local=51 edges=46 halo=35 interior=25 send=34 boundary=26
+PLAN rank=1 local=51 edges=54 halo=34 interior=24 send=34 boundary=27
+PLAN rank=2 local=51 edges=51 halo=34 interior=21 send=36 boundary=30
+PLAN rank=3 local=50 edges=47 halo=37 interior=20 send=36 boundary=30
+============ MPI 分布式 GNN 推理 ============
+图          : tiny.bin
+节点/边     : 203 / 198    特征维度: 7
+进程数      : 4    划分: cyclic    层数: 1    隐层: 11
+跨进程边    : 160 / 198  (80.8%)
+halo 节点   : 合计 140, 单进程最多 37 (本地约 50)
+划分+建计划 : 0.0016 s
+串行参考    : 0.0000 s (单进程整图 1 层)
+--------------------------------------------
+mpi1        中位 0.0002 s  最小 0.0001  最大 0.0037  加速比 0.09  效率 0.02  检查通过
+mpi2        中位 0.0001 s  最小 0.0001  最大 0.0002  加速比 0.10  效率 0.03  检查通过
+allgather   中位 0.0002 s  最小 0.0002  最大 0.0003  加速比 0.07  效率 0.02  检查通过
+
+DONE check_cyclic_p4_l1.log 0.2s
+$ mpirun -f hostfile_spread -np 4 ./main --graph tiny.bin --part cyclic --layers 3 --hidden 11 --warmup 1 --repeats 10
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+PLAN rank=0 local=51 edges=46 halo=35 interior=25 send=34 boundary=26
+PLAN rank=1 local=51 edges=54 halo=34 interior=24 send=34 boundary=27
+PLAN rank=2 local=51 edges=51 halo=34 interior=21 send=36 boundary=30
+PLAN rank=3 local=50 edges=47 halo=37 interior=20 send=36 boundary=30
+============ MPI 分布式 GNN 推理 ============
+图          : tiny.bin
+节点/边     : 203 / 198    特征维度: 7
+进程数      : 4    划分: cyclic    层数: 3    隐层: 11
+跨进程边    : 160 / 198  (80.8%)
+halo 节点   : 合计 140, 单进程最多 37 (本地约 50)
+划分+建计划 : 0.0015 s
+串行参考    : 0.0001 s (单进程整图 3 层)
+--------------------------------------------
+mpi1        中位 0.0003 s  最小 0.0003  最大 0.0043  加速比 0.19  效率 0.05  检查通过
+mpi2        中位 0.0003 s  最小 0.0003  最大 0.0004  加速比 0.20  效率 0.05  检查通过
+allgather   中位 0.0005 s  最小 0.0005  最大 0.0044  加速比 0.13  效率 0.03  检查通过
+
+DONE check_cyclic_p4_l3.log 0.2s
+$ mpirun -f hostfile_spread -np 4 ./main --graph empty.bin --part cyclic --layers 3 --hidden 11 --warmup 1 --repeats 10
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+PLAN rank=0 local=1 edges=0 halo=0 interior=1 send=0 boundary=0
+PLAN rank=1 local=1 edges=0 halo=0 interior=1 send=0 boundary=0
+PLAN rank=2 local=1 edges=0 halo=0 interior=1 send=0 boundary=0
+PLAN rank=3 local=0 edges=0 halo=0 interior=0 send=0 boundary=0
+============ MPI 分布式 GNN 推理 ============
+图          : empty.bin
+节点/边     : 3 / 0    特征维度: 7
+进程数      : 4    划分: cyclic    层数: 3    隐层: 11
+跨进程边    : 0 / 0  (0.0%)
+halo 节点   : 合计 0, 单进程最多 0 (本地约 0)
+划分+建计划 : 0.0014 s
+串行参考    : 0.0000 s (单进程整图 3 层)
+--------------------------------------------
+mpi1        中位 0.0000 s  最小 0.0000  最大 0.0000  加速比 1.00  效率 0.25  检查通过
+mpi2        中位 0.0000 s  最小 0.0000  最大 0.0000  加速比 1.40  效率 0.35  检查通过
+allgather   中位 0.0004 s  最小 0.0004  最大 0.0004  加速比 0.00  效率 0.00  检查通过
+
+DONE check_empty_cyclic.log 0.2s
+CORRECTNESS_ALL_PASS 10 configurations x 3 strategies
+$ python3 gen_graph.py --nodes 200000 --degree 20 --feat-dim 64 --communities 8 --seed 2025 --out graph.bin
+已写出 graph.bin
+  节点数      : 200000
+  有向边数    : 3999004
+  平均度数    : 20.00 (最大 44, 中位 20, 孤立点 0)
+  度数偏斜    : max/mean = 2.2
+  特征维度    : 64
+  跨社区边    : 26.3%
+  block 负载  : max/mean  P=4: 1.00  P=8: 1.00
+  文件大小    : 64.8 MB
+
+DONE generate_graph.log 0.7s
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+$ mpirun -f hostfile_single -np 1 ./main --graph graph.bin --part block --layers 2 --hidden 64 --warmup 1 --repeats 10
+PLAN rank=0 local=200000 edges=3999004 halo=0 interior=200000 send=0 boundary=0
+============ MPI 分布式 GNN 推理 ============
+图          : graph.bin
+节点/边     : 200000 / 3999004    特征维度: 64
+进程数      : 1    划分: block    层数: 2    隐层: 64
+跨进程边    : 0 / 3999004  (0.0%)
+halo 节点   : 合计 0, 单进程最多 0 (本地约 200000)
+划分+建计划 : 0.0362 s
+串行参考    : 1.6683 s (单进程整图 2 层)
+--------------------------------------------
+mpi1        中位 1.6362 s  最小 1.5995  最大 1.6532  加速比 1.02  效率 1.02  检查通过
+mpi2        中位 1.6341 s  最小 1.6299  最大 1.6363  加速比 1.02  效率 1.02  检查通过
+allgather   中位 1.6448 s  最小 1.6173  最大 1.6596  加速比 1.01  效率 1.01  检查通过
+
+DONE perf_single_p1.log 60.8s
+$ mpirun -f hostfile_single -np 2 ./main --graph graph.bin --part block --layers 2 --hidden 64 --warmup 1 --repeats 10
+PLAN rank=0 local=100000 edges=2000250 halo=94972 interior=5053 send=94947 boundary=94947
+PLAN rank=1 local=100000 edges=1998754 halo=94947 interior=5028 send=94972 boundary=94972
+============ MPI 分布式 GNN 推理 ============
+图          : graph.bin
+节点/边     : 200000 / 3999004    特征维度: 64
+进程数      : 2    划分: block    层数: 2    隐层: 64
+跨进程边    : 599476 / 3999004  (15.0%)
+halo 节点   : 合计 189919, 单进程最多 94972 (本地约 100000)
+划分+建计划 : 0.0336 s
+串行参考    : 1.6049 s (单进程整图 2 层)
+--------------------------------------------
+mpi1        中位 0.8778 s  最小 0.8728  最大 0.8994  加速比 1.83  效率 0.91  检查通过
+mpi2        中位 0.8696 s  最小 0.8624  最大 0.8758  加速比 1.85  效率 0.92  检查通过
+allgather   中位 0.8811 s  最小 0.8785  最大 0.8873  加速比 1.82  效率 0.91  检查通过
+
+DONE perf_single_p2.log 33.4s
+$ mpirun -f hostfile_single -np 4 ./main --graph graph.bin --part block --layers 2 --hidden 64 --warmup 1 --repeats 10
+PLAN rank=0 local=50000 edges=1001841 halo=116528 interior=564 send=116511 boundary=49436
+PLAN rank=1 local=50000 edges=998409 halo=116321 interior=549 send=116450 boundary=49451
+PLAN rank=2 local=50000 edges=999247 halo=116670 interior=579 send=116421 boundary=49421
+PLAN rank=3 local=50000 edges=999507 halo=116507 interior=539 send=116644 boundary=49461
+============ MPI 分布式 GNN 推理 ============
+图          : graph.bin
+节点/边     : 200000 / 3999004    特征维度: 64
+进程数      : 4    划分: block    层数: 2    隐层: 64
+跨进程边    : 900454 / 3999004  (22.5%)
+halo 节点   : 合计 466026, 单进程最多 116670 (本地约 50000)
+划分+建计划 : 0.1739 s
+串行参考    : 3.2246 s (单进程整图 2 层)
+--------------------------------------------
+mpi1        中位 3.7129 s  最小 3.6906  最大 3.7688  加速比 0.87  效率 0.22  检查通过
+mpi2        中位 3.5591 s  最小 1.9105  最大 3.7322  加速比 0.91  效率 0.23  检查通过
+allgather   中位 6.2371 s  最小 1.9065  最大 6.6577  加速比 0.52  效率 0.13  检查通过
+
+DONE perf_single_p4.log 152.5s
+$ mpirun -f hostfile_spread -np 2 ./main --graph graph.bin --part block --layers 2 --hidden 64 --warmup 1 --repeats 10
+
+Authorized users only. All activities may be monitored and reported.
+PLAN rank=0 local=100000 edges=2000250 halo=94972 interior=5053 send=94947 boundary=94947
+PLAN rank=1 local=100000 edges=1998754 halo=94947 interior=5028 send=94972 boundary=94972
+============ MPI 分布式 GNN 推理 ============
+图          : graph.bin
+节点/边     : 200000 / 3999004    特征维度: 64
+进程数      : 2    划分: block    层数: 2    隐层: 64
+跨进程边    : 599476 / 3999004  (15.0%)
+halo 节点   : 合计 189919, 单进程最多 94972 (本地约 100000)
+划分+建计划 : 0.0346 s
+串行参考    : 1.6232 s (单进程整图 2 层)
+--------------------------------------------
+mpi1        中位 0.8652 s  最小 0.8498  最大 1.0940  加速比 1.88  效率 0.94  检查通过
+mpi2        中位 0.8640 s  最小 0.8574  最大 0.9701  加速比 1.88  效率 0.94  检查通过
+allgather   中位 0.8631 s  最小 0.8489  最大 0.8813  加速比 1.88  效率 0.94  检查通过
+
+DONE perf_spread_p2.log 33.6s
+$ mpirun -f hostfile_spread -np 4 ./main --graph graph.bin --part block --layers 2 --hidden 64 --warmup 1 --repeats 10
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+PLAN rank=0 local=50000 edges=1001841 halo=116528 interior=564 send=116511 boundary=49436
+PLAN rank=1 local=50000 edges=998409 halo=116321 interior=549 send=116450 boundary=49451
+PLAN rank=2 local=50000 edges=999247 halo=116670 interior=579 send=116421 boundary=49421
+PLAN rank=3 local=50000 edges=999507 halo=116507 interior=539 send=116644 boundary=49461
+============ MPI 分布式 GNN 推理 ============
+图          : graph.bin
+节点/边     : 200000 / 3999004    特征维度: 64
+进程数      : 4    划分: block    层数: 2    隐层: 64
+跨进程边    : 900454 / 3999004  (22.5%)
+halo 节点   : 合计 466026, 单进程最多 116670 (本地约 50000)
+划分+建计划 : 0.0296 s
+串行参考    : 1.6691 s (单进程整图 2 层)
+--------------------------------------------
+mpi1        中位 0.4871 s  最小 0.4771  最大 0.6675  加速比 3.43  效率 0.86  检查通过
+mpi2        中位 0.4839 s  最小 0.4706  最大 0.5168  加速比 3.45  效率 0.86  检查通过
+allgather   中位 0.4973 s  最小 0.4844  最大 0.5048  加速比 3.36  效率 0.84  检查通过
+
+DONE perf_spread_p4.log 20.0s
+$ mpirun -f hostfile_spread8 -np 8 ./main --graph graph.bin --part block --layers 2 --hidden 64 --warmup 1 --repeats 10
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+PLAN rank=0 local=25000 edges=501806 halo=92702 interior=108 send=92635 boundary=24892
+PLAN rank=1 local=25000 edges=500035 halo=92288 interior=141 send=92248 boundary=24859
+PLAN rank=2 local=25000 edges=500147 halo=92425 interior=126 send=92282 boundary=24874
+PLAN rank=3 local=25000 edges=498262 halo=92083 interior=140 send=92408 boundary=24860
+PLAN rank=4 local=25000 edges=500444 halo=92479 interior=127 send=92306 boundary=24873
+PLAN rank=5 local=25000 edges=498803 halo=92500 interior=132 send=92211 boundary=24868
+PLAN rank=6 local=25000 edges=498843 halo=92382 interior=114 send=92577 boundary=24886
+PLAN rank=7 local=25000 edges=500664 halo=92167 interior=128 send=92359 boundary=24872
+============ MPI 分布式 GNN 推理 ============
+图          : graph.bin
+节点/边     : 200000 / 3999004    特征维度: 64
+进程数      : 8    划分: block    层数: 2    隐层: 64
+跨进程边    : 1050426 / 3999004  (26.3%)
+halo 节点   : 合计 739026, 单进程最多 92702 (本地约 25000)
+划分+建计划 : 0.0286 s
+串行参考    : 1.6285 s (单进程整图 2 层)
+--------------------------------------------
+mpi1        中位 0.4828 s  最小 0.3390  最大 0.5728  加速比 3.37  效率 0.42  检查通过
+mpi2        中位 0.3695 s  最小 0.3362  最大 0.7335  加速比 4.41  效率 0.55  检查通过
+allgather   中位 0.4758 s  最小 0.4422  最大 0.5212  加速比 3.42  效率 0.43  检查通过
+
+DONE perf_spread8_p8.log 18.6s
+$ mpirun -f hostfile_spread -np 4 ./main --graph graph.bin --part cyclic --layers 2 --hidden 64 --warmup 1 --repeats 10
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+PLAN rank=0 local=50000 edges=1000674 halo=149038 interior=0 send=148991 boundary=50000
+PLAN rank=1 local=50000 edges=996937 halo=148907 interior=0 send=148947 boundary=50000
+PLAN rank=2 local=50000 edges=999732 halo=148962 interior=0 send=148973 boundary=50000
+PLAN rank=3 local=50000 edges=1001661 halo=149019 interior=0 send=149015 boundary=50000
+============ MPI 分布式 GNN 推理 ============
+图          : graph.bin
+节点/边     : 200000 / 3999004    特征维度: 64
+进程数      : 4    划分: cyclic    层数: 2    隐层: 64
+跨进程边    : 2999724 / 3999004  (75.0%)
+halo 节点   : 合计 595926, 单进程最多 149038 (本地约 50000)
+划分+建计划 : 0.0335 s
+串行参考    : 1.6362 s (单进程整图 2 层)
+--------------------------------------------
+mpi1        中位 0.5168 s  最小 0.4972  最大 0.5380  加速比 3.17  效率 0.79  检查通过
+mpi2        中位 0.5098 s  最小 0.4990  最大 0.5375  加速比 3.21  效率 0.80  检查通过
+allgather   中位 0.5024 s  最小 0.4774  最大 0.6958  加速比 3.26  效率 0.81  检查通过
+
+DONE perf_base_cyclic.log 20.7s
+$ python3 gen_graph.py --nodes 200000 --degree 20 --feat-dim 64 --communities 8 --seed 2025 --out intra010.bin --intra 0.10
+已写出 intra010.bin
+  节点数      : 200000
+  有向边数    : 3999740
+  平均度数    : 20.00 (最大 43, 中位 20, 孤立点 0)
+  度数偏斜    : max/mean = 2.2
+  特征维度    : 64
+  跨社区边    : 78.8%
+  block 负载  : max/mean  P=4: 1.00  P=8: 1.00
+  文件大小    : 64.8 MB
+
+DONE generate_intra010.log 0.7s
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+$ mpirun -f hostfile_spread -np 4 ./main --graph intra010.bin --part block --layers 2 --hidden 64 --warmup 1 --repeats 10
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+PLAN rank=0 local=50000 edges=1001269 halo=148262 interior=0 send=148356 boundary=50000
+PLAN rank=1 local=50000 edges=999960 halo=148357 interior=0 send=148267 boundary=50000
+PLAN rank=2 local=50000 edges=998961 halo=148347 interior=0 send=148280 boundary=50000
+PLAN rank=3 local=50000 edges=999550 halo=148317 interior=0 send=148380 boundary=50000
+============ MPI 分布式 GNN 推理 ============
+图          : intra010.bin
+节点/边     : 200000 / 3999740    特征维度: 64
+进程数      : 4    划分: block    层数: 2    隐层: 64
+跨进程边    : 2702750 / 3999740  (67.6%)
+halo 节点   : 合计 593283, 单进程最多 148357 (本地约 50000)
+划分+建计划 : 0.0337 s
+串行参考    : 1.7375 s (单进程整图 2 层)
+--------------------------------------------
+mpi1        中位 0.5558 s  最小 0.5478  最大 0.5781  加速比 3.13  效率 0.78  检查通过
+mpi2        中位 0.5566 s  最小 0.5374  最大 0.5867  加速比 3.12  效率 0.78  检查通过
+allgather   中位 0.5319 s  最小 0.5172  最大 0.5461  加速比 3.27  效率 0.82  检查通过
+
+DONE perf_intra010_block.log 21.9s
+$ mpirun -f hostfile_spread -np 4 ./main --graph intra010.bin --part cyclic --layers 2 --hidden 64 --warmup 1 --repeats 10
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+PLAN rank=0 local=50000 edges=998835 halo=148970 interior=1 send=148973 boundary=49999
+PLAN rank=1 local=50000 edges=1001726 halo=149010 interior=0 send=148980 boundary=50000
+PLAN rank=2 local=50000 edges=999089 halo=148968 interior=0 send=149002 boundary=50000
+PLAN rank=3 local=50000 edges=1000090 halo=149007 interior=0 send=149000 boundary=50000
+============ MPI 分布式 GNN 推理 ============
+图          : intra010.bin
+节点/边     : 200000 / 3999740    特征维度: 64
+进程数      : 4    划分: cyclic    层数: 2    隐层: 64
+跨进程边    : 2999174 / 3999740  (75.0%)
+halo 节点   : 合计 595955, 单进程最多 149010 (本地约 50000)
+划分+建计划 : 0.0337 s
+串行参考    : 1.7520 s (单进程整图 2 层)
+--------------------------------------------
+mpi1        中位 0.5620 s  最小 0.5471  最大 0.5993  加速比 3.12  效率 0.78  检查通过
+mpi2        中位 0.5622 s  最小 0.5506  最大 0.5722  加速比 3.12  效率 0.78  检查通过
+allgather   中位 0.5442 s  最小 0.5286  最大 0.5626  加速比 3.22  效率 0.80  检查通过
+
+DONE perf_intra010_cyclic.log 22.2s
+$ python3 gen_graph.py --nodes 200000 --degree 20 --feat-dim 64 --communities 8 --seed 2025 --out intra095.bin --intra 0.95
+已写出 intra095.bin
+  节点数      : 200000
+  有向边数    : 3998390
+  平均度数    : 19.99 (最大 43, 中位 20, 孤立点 0)
+  度数偏斜    : max/mean = 2.2
+  特征维度    : 64
+  跨社区边    : 4.4%
+  block 负载  : max/mean  P=4: 1.00  P=8: 1.00
+  文件大小    : 64.8 MB
+
+DONE generate_intra095.log 0.7s
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+$ mpirun -f hostfile_spread -np 4 ./main --graph intra095.bin --part block --layers 2 --hidden 64 --warmup 1 --repeats 10
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+PLAN rank=0 local=50000 edges=1001103 halo=32876 interior=23764 send=32931 boundary=26236
+PLAN rank=1 local=50000 edges=998867 halo=33062 interior=23720 send=33030 boundary=26280
+PLAN rank=2 local=50000 edges=997994 halo=33174 interior=23665 send=33168 boundary=26335
+PLAN rank=3 local=50000 edges=1000426 halo=33119 interior=23718 send=33102 boundary=26282
+============ MPI 分布式 GNN 推理 ============
+图          : intra095.bin
+节点/边     : 200000 / 3998390    特征维度: 64
+进程数      : 4    划分: block    层数: 2    隐层: 64
+跨进程边    : 149418 / 3998390  (3.7%)
+halo 节点   : 合计 132231, 单进程最多 33174 (本地约 50000)
+划分+建计划 : 0.0268 s
+串行参考    : 1.4884 s (单进程整图 2 层)
+--------------------------------------------
+mpi1        中位 0.4151 s  最小 0.4093  最大 0.4338  加速比 3.59  效率 0.90  检查通过
+mpi2        中位 0.4180 s  最小 0.4121  最大 0.4255  加速比 3.56  效率 0.89  检查通过
+allgather   中位 0.4585 s  最小 0.4427  最大 0.4791  加速比 3.25  效率 0.81  检查通过
+
+DONE perf_intra095_block.log 17.4s
+$ mpirun -f hostfile_spread -np 4 ./main --graph intra095.bin --part cyclic --layers 2 --hidden 64 --warmup 1 --repeats 10
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+PLAN rank=0 local=50000 edges=999648 halo=148968 interior=0 send=149037 boundary=50000
+PLAN rank=1 local=50000 edges=997874 halo=149000 interior=0 send=148951 boundary=50000
+PLAN rank=2 local=50000 edges=999534 halo=148959 interior=0 send=148990 boundary=50000
+PLAN rank=3 local=50000 edges=1001334 halo=149020 interior=0 send=148969 boundary=50000
+============ MPI 分布式 GNN 推理 ============
+图          : intra095.bin
+节点/边     : 200000 / 3998390    特征维度: 64
+进程数      : 4    划分: cyclic    层数: 2    隐层: 64
+跨进程边    : 2998112 / 3998390  (75.0%)
+halo 节点   : 合计 595947, 单进程最多 149020 (本地约 50000)
+划分+建计划 : 0.0470 s
+串行参考    : 1.5397 s (单进程整图 2 层)
+--------------------------------------------
+mpi1        中位 0.4879 s  最小 0.4768  最大 0.5113  加速比 3.16  效率 0.79  检查通过
+mpi2        中位 0.4795 s  最小 0.4634  最大 0.4878  加速比 3.21  效率 0.80  检查通过
+allgather   中位 0.4796 s  最小 0.4640  最大 0.4918  加速比 3.21  效率 0.80  检查通过
+
+DONE perf_intra095_cyclic.log 19.6s
+$ mpirun -f hostfile_spread -np 4 ./main --graph graph.bin --part block --layers 1 --hidden 64 --warmup 1 --repeats 10
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+PLAN rank=0 local=50000 edges=1001841 halo=116528 interior=564 send=116511 boundary=49436
+PLAN rank=1 local=50000 edges=998409 halo=116321 interior=549 send=116450 boundary=49451
+PLAN rank=2 local=50000 edges=999247 halo=116670 interior=579 send=116421 boundary=49421
+PLAN rank=3 local=50000 edges=999507 halo=116507 interior=539 send=116644 boundary=49461
+============ MPI 分布式 GNN 推理 ============
+图          : graph.bin
+节点/边     : 200000 / 3999004    特征维度: 64
+进程数      : 4    划分: block    层数: 1    隐层: 64
+跨进程边    : 900454 / 3999004  (22.5%)
+halo 节点   : 合计 466026, 单进程最多 116670 (本地约 50000)
+划分+建计划 : 0.0279 s
+串行参考    : 0.7639 s (单进程整图 1 层)
+--------------------------------------------
+mpi1        中位 0.2285 s  最小 0.2200  最大 0.4211  加速比 3.34  效率 0.84  检查通过
+mpi2        中位 0.2265 s  最小 0.2154  最大 0.2351  加速比 3.37  效率 0.84  检查通过
+allgather   中位 0.2387 s  最小 0.2219  最大 0.2516  加速比 3.20  效率 0.80  检查通过
+
+DONE perf_l1_h64.log 9.6s
+$ mpirun -f hostfile_spread -np 4 ./main --graph graph.bin --part block --layers 4 --hidden 64 --warmup 1 --repeats 10
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+PLAN rank=0 local=50000 edges=1001841 halo=116528 interior=564 send=116511 boundary=49436
+PLAN rank=1 local=50000 edges=998409 halo=116321 interior=549 send=116450 boundary=49451
+PLAN rank=2 local=50000 edges=999247 halo=116670 interior=579 send=116421 boundary=49421
+PLAN rank=3 local=50000 edges=999507 halo=116507 interior=539 send=116644 boundary=49461
+============ MPI 分布式 GNN 推理 ============
+图          : graph.bin
+节点/边     : 200000 / 3999004    特征维度: 64
+进程数      : 4    划分: block    层数: 4    隐层: 64
+跨进程边    : 900454 / 3999004  (22.5%)
+halo 节点   : 合计 466026, 单进程最多 116670 (本地约 50000)
+划分+建计划 : 0.0278 s
+串行参考    : 3.3349 s (单进程整图 4 层)
+--------------------------------------------
+mpi1        中位 0.9922 s  最小 0.9769  最大 1.0105  加速比 3.36  效率 0.84  检查通过
+mpi2        中位 1.0024 s  最小 0.9733  最大 1.0175  加速比 3.33  效率 0.83  检查通过
+allgather   中位 0.9912 s  最小 0.9799  最大 1.0174  加速比 3.36  效率 0.84  检查通过
+
+DONE perf_l4_h64.log 39.8s
+$ mpirun -f hostfile_spread -np 4 ./main --graph graph.bin --part block --layers 2 --hidden 32 --warmup 1 --repeats 10
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+PLAN rank=0 local=50000 edges=1001841 halo=116528 interior=564 send=116511 boundary=49436
+PLAN rank=1 local=50000 edges=998409 halo=116321 interior=549 send=116450 boundary=49451
+PLAN rank=2 local=50000 edges=999247 halo=116670 interior=579 send=116421 boundary=49421
+PLAN rank=3 local=50000 edges=999507 halo=116507 interior=539 send=116644 boundary=49461
+============ MPI 分布式 GNN 推理 ============
+图          : graph.bin
+节点/边     : 200000 / 3999004    特征维度: 64
+进程数      : 4    划分: block    层数: 2    隐层: 32
+跨进程边    : 900454 / 3999004  (22.5%)
+halo 节点   : 合计 466026, 单进程最多 116670 (本地约 50000)
+划分+建计划 : 0.0314 s
+串行参考    : 0.8896 s (单进程整图 2 层)
+--------------------------------------------
+mpi1        中位 0.2753 s  最小 0.2647  最大 0.2816  加速比 3.23  效率 0.81  检查通过
+mpi2        中位 0.2763 s  最小 0.2653  最大 0.2904  加速比 3.22  效率 0.81  检查通过
+allgather   中位 0.2831 s  最小 0.2689  最大 0.3035  加速比 3.14  效率 0.79  检查通过
+
+DONE perf_l2_h32.log 11.3s
+$ mpirun -f hostfile_spread -np 4 ./main --graph graph.bin --part block --layers 2 --hidden 128 --warmup 1 --repeats 10
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+PLAN rank=0 local=50000 edges=1001841 halo=116528 interior=564 send=116511 boundary=49436
+PLAN rank=1 local=50000 edges=998409 halo=116321 interior=549 send=116450 boundary=49451
+PLAN rank=2 local=50000 edges=999247 halo=116670 interior=579 send=116421 boundary=49421
+PLAN rank=3 local=50000 edges=999507 halo=116507 interior=539 send=116644 boundary=49461
+============ MPI 分布式 GNN 推理 ============
+图          : graph.bin
+节点/边     : 200000 / 3999004    特征维度: 64
+进程数      : 4    划分: block    层数: 2    隐层: 128
+跨进程边    : 900454 / 3999004  (22.5%)
+halo 节点   : 合计 466026, 单进程最多 116670 (本地约 50000)
+划分+建计划 : 0.0296 s
+串行参考    : 4.2740 s (单进程整图 2 层)
+--------------------------------------------
+mpi1        中位 1.1868 s  最小 1.1582  最大 1.4124  加速比 3.60  效率 0.90  检查通过
+mpi2        中位 1.1802 s  最小 1.1486  最大 1.2021  加速比 3.62  效率 0.91  检查通过
+allgather   中位 1.1811 s  最小 1.1631  最大 1.4247  加速比 3.62  效率 0.90  检查通过
+
+DONE perf_l2_h128.log 47.8s
+$ python3 gen_graph.py --nodes 200000 --degree 20 --feat-dim 64 --communities 8 --seed 2025 --out skew01.bin --skew 0.02 --skew-degree 400 --hub-span 0.1
+已写出 skew01.bin
+  节点数      : 200000
+  有向边数    : 7195494
+  平均度数    : 35.98 (最大 449, 中位 28, 孤立点 0)
+  度数偏斜    : max/mean = 12.5
+  特征维度    : 64
+  跨社区边    : 53.5%
+  block 负载  : max/mean  P=4: 1.67  P=8: 2.56
+  文件大小    : 77.0 MB
+
+DONE generate_skew01.log 1.0s
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+$ mpirun -f hostfile_spread -np 4 ./main --graph skew01.bin --part block --layers 2 --hidden 64 --warmup 1 --repeats 10
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+PLAN rank=0 local=50000 edges=2999700 halo=149987 interior=521 send=119302 boundary=49479
+PLAN rank=1 local=50000 edges=1398212 halo=117214 interior=0 send=127578 boundary=50000
+PLAN rank=2 local=50000 edges=1398363 halo=117601 interior=1 send=127603 boundary=49999
+PLAN rank=3 local=50000 edges=1399219 halo=117474 interior=0 send=127793 boundary=50000
+============ MPI 分布式 GNN 推理 ============
+图          : skew01.bin
+节点/边     : 200000 / 7195494    特征维度: 64
+进程数      : 4    划分: block    层数: 2    隐层: 64
+跨进程边    : 3297716 / 7195494  (45.8%)
+halo 节点   : 合计 502276, 单进程最多 149987 (本地约 50000)
+划分+建计划 : 0.0389 s
+串行参考    : 2.1433 s (单进程整图 2 层)
+--------------------------------------------
+mpi1        中位 0.8036 s  最小 0.7837  最大 0.8231  加速比 2.67  效率 0.67  检查通过
+mpi2        中位 0.7992 s  最小 0.7858  最大 0.8364  加速比 2.68  效率 0.67  检查通过
+allgather   中位 0.7838 s  最小 0.7441  最大 0.8391  加速比 2.73  效率 0.68  检查通过
+
+DONE perf_skew01_block.log 31.3s
+$ mpirun -f hostfile_spread -np 4 ./main --graph skew01.bin --part cyclic --layers 2 --hidden 64 --warmup 1 --repeats 10
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+PLAN rank=0 local=50000 edges=1786477 halo=149860 interior=0 send=149879 boundary=50000
+PLAN rank=1 local=50000 edges=1809752 halo=149875 interior=0 send=149857 boundary=50000
+PLAN rank=2 local=50000 edges=1800706 halo=149877 interior=0 send=149869 boundary=50000
+PLAN rank=3 local=50000 edges=1798559 halo=149865 interior=0 send=149872 boundary=50000
+============ MPI 分布式 GNN 推理 ============
+图          : skew01.bin
+节点/边     : 200000 / 7195494    特征维度: 64
+进程数      : 4    划分: cyclic    层数: 2    隐层: 64
+跨进程边    : 5396368 / 7195494  (75.0%)
+halo 节点   : 合计 599477, 单进程最多 149877 (本地约 50000)
+划分+建计划 : 0.0494 s
+串行参考    : 2.0638 s (单进程整图 2 层)
+--------------------------------------------
+mpi1        中位 0.6274 s  最小 0.6168  最大 0.6450  加速比 3.29  效率 0.82  检查通过
+mpi2        中位 0.6301 s  最小 0.6088  最大 0.8226  加速比 3.28  效率 0.82  检查通过
+allgather   中位 0.6372 s  最小 0.6127  最大 0.6826  加速比 3.24  效率 0.81  检查通过
+
+DONE perf_skew01_cyclic.log 25.5s
+$ python3 gen_graph.py --nodes 200000 --degree 20 --feat-dim 64 --communities 8 --seed 2025 --out skew10.bin --skew 0.02 --skew-degree 400 --hub-span 1.0
+已写出 skew10.bin
+  节点数      : 200000
+  有向边数    : 7195606
+  平均度数    : 35.98 (最大 447, 中位 28, 孤立点 0)
+  度数偏斜    : max/mean = 12.4
+  特征维度    : 64
+  跨社区边    : 53.5%
+  block 负载  : max/mean  P=4: 1.01  P=8: 1.02
+  文件大小    : 77.0 MB
+
+DONE generate_skew10.log 1.0s
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+$ mpirun -f hostfile_spread -np 4 ./main --graph skew10.bin --part block --layers 2 --hidden 64 --warmup 1 --repeats 10
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+PLAN rank=0 local=50000 edges=1805562 halo=145613 interior=1 send=145572 boundary=49999
+PLAN rank=1 local=50000 edges=1796982 halo=145385 interior=2 send=145400 boundary=49998
+PLAN rank=2 local=50000 edges=1781884 halo=145043 interior=3 send=145505 boundary=49997
+PLAN rank=3 local=50000 edges=1811178 halo=145835 interior=1 send=145399 boundary=49999
+============ MPI 分布式 GNN 推理 ============
+图          : skew10.bin
+节点/边     : 200000 / 7195606    特征维度: 64
+进程数      : 4    划分: block    层数: 2    隐层: 64
+跨进程边    : 3296224 / 7195606  (45.8%)
+halo 节点   : 合计 581876, 单进程最多 145835 (本地约 50000)
+划分+建计划 : 0.0419 s
+串行参考    : 2.0978 s (单进程整图 2 层)
+--------------------------------------------
+mpi1        中位 0.6248 s  最小 0.6030  最大 0.6399  加速比 3.36  效率 0.84  检查通过
+mpi2        中位 0.6277 s  最小 0.6203  最大 0.6481  加速比 3.34  效率 0.84  检查通过
+allgather   中位 0.6086 s  最小 0.5924  最大 0.6458  加速比 3.45  效率 0.86  检查通过
+
+DONE perf_skew10_block.log 24.9s
+$ mpirun -f hostfile_spread -np 4 ./main --graph skew10.bin --part cyclic --layers 2 --hidden 64 --warmup 1 --repeats 10
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+PLAN rank=0 local=50000 edges=1812866 halo=149879 interior=0 send=149862 boundary=50000
+PLAN rank=1 local=50000 edges=1797822 halo=149863 interior=0 send=149889 boundary=50000
+PLAN rank=2 local=50000 edges=1797908 halo=149869 interior=0 send=149867 boundary=50000
+PLAN rank=3 local=50000 edges=1787010 halo=149870 interior=0 send=149863 boundary=50000
+============ MPI 分布式 GNN 推理 ============
+图          : skew10.bin
+节点/边     : 200000 / 7195606    特征维度: 64
+进程数      : 4    划分: cyclic    层数: 2    隐层: 64
+跨进程边    : 5396162 / 7195606  (75.0%)
+halo 节点   : 合计 599481, 单进程最多 149879 (本地约 50000)
+划分+建计划 : 0.0408 s
+串行参考    : 2.0710 s (单进程整图 2 层)
+--------------------------------------------
+mpi1        中位 0.6452 s  最小 0.6156  最大 0.8418  加速比 3.21  效率 0.80  检查通过
+mpi2        中位 0.6337 s  最小 0.6184  最大 0.6629  加速比 3.27  效率 0.82  检查通过
+allgather   中位 0.6189 s  最小 0.6073  最大 0.6381  加速比 3.35  效率 0.84  检查通过
+
+DONE perf_skew10_cyclic.log 25.6s
+PERFORMANCE_ALL_PASS 19 configurations x 3 strategies

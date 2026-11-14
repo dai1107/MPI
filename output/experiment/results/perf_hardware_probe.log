@@ -1,0 +1,12 @@
+
+ Performance counter stats for 'true':
+
+   <not supported>      cycles:u                                                    
+   <not supported>      instructions:u                                              
+
+       0.000341115 seconds time elapsed
+
+       0.000341000 seconds user
+       0.000000000 seconds sys
+
+

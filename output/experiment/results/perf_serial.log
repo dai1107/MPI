@@ -1,0 +1,15 @@
+# started on Sat Nov 14 13:51:53 2026
+
+
+ Performance counter stats for './serial_profile graph.bin 64 2':
+
+         18,242.46 msec task-clock:u              #    1.000 CPUs utilized          
+                 0      context-switches:u        #    0.000 K/sec                  
+            27,095      page-faults:u             #    0.001 M/sec                  
+
+      18.244466809 seconds time elapsed
+
+      18.134375000 seconds user
+       0.087847000 seconds sys
+
+

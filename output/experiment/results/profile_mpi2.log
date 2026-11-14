@@ -1,0 +1,20 @@
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+PLAN rank=0 local=50000 edges=1001841 halo=116528 interior=564 send=116511 boundary=49436
+PLAN rank=1 local=50000 edges=998409 halo=116321 interior=549 send=116450 boundary=49451
+PLAN rank=2 local=50000 edges=999247 halo=116670 interior=579 send=116421 boundary=49421
+PLAN rank=3 local=50000 edges=999507 halo=116507 interior=539 send=116644 boundary=49461
+============ MPI 分布式 GNN 推理 ============
+图          : graph.bin
+节点/边     : 200000 / 3999004    特征维度: 64
+进程数      : 4    划分: block    层数: 2    隐层: 64
+跨进程边    : 900454 / 3999004  (22.5%)
+halo 节点   : 合计 466026, 单进程最多 116670 (本地约 50000)
+划分+建计划 : 0.0277 s
+串行参考    : 已跳过 (--no-check，加速比一栏无意义)
+--------------------------------------------
+mpi2        中位 0.4960 s  最小 0.4802  最大 0.5257  加速比 -     效率 -     (未检查)

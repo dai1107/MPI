@@ -1,0 +1,23 @@
+$ mpirun -f hostfile_spread -np 4 ./main --graph skew10.bin --part cyclic --layers 2 --hidden 64 --warmup 1 --repeats 10
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+PLAN rank=0 local=50000 edges=1812866 halo=149879 interior=0 send=149862 boundary=50000
+PLAN rank=1 local=50000 edges=1797822 halo=149863 interior=0 send=149889 boundary=50000
+PLAN rank=2 local=50000 edges=1797908 halo=149869 interior=0 send=149867 boundary=50000
+PLAN rank=3 local=50000 edges=1787010 halo=149870 interior=0 send=149863 boundary=50000
+============ MPI 分布式 GNN 推理 ============
+图          : skew10.bin
+节点/边     : 200000 / 7195606    特征维度: 64
+进程数      : 4    划分: cyclic    层数: 2    隐层: 64
+跨进程边    : 5396162 / 7195606  (75.0%)
+halo 节点   : 合计 599481, 单进程最多 149879 (本地约 50000)
+划分+建计划 : 0.0408 s
+串行参考    : 2.0710 s (单进程整图 2 层)
+--------------------------------------------
+mpi1        中位 0.6452 s  最小 0.6156  最大 0.8418  加速比 3.21  效率 0.80  检查通过
+mpi2        中位 0.6337 s  最小 0.6184  最大 0.6629  加速比 3.27  效率 0.82  检查通过
+allgather   中位 0.6189 s  最小 0.6073  最大 0.6381  加速比 3.35  效率 0.84  检查通过

@@ -1,0 +1,10 @@
+$ python3 gen_graph.py --nodes 200000 --degree 20 --feat-dim 64 --communities 8 --seed 2025 --out skew10.bin --skew 0.02 --skew-degree 400 --hub-span 1.0
+已写出 skew10.bin
+  节点数      : 200000
+  有向边数    : 7195606
+  平均度数    : 35.98 (最大 447, 中位 28, 孤立点 0)
+  度数偏斜    : max/mean = 12.4
+  特征维度    : 64
+  跨社区边    : 53.5%
+  block 负载  : max/mean  P=4: 1.01  P=8: 1.02
+  文件大小    : 77.0 MB

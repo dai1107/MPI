@@ -1,0 +1,27 @@
+$ mpirun -f hostfile_spread8 -np 8 ./main --graph graph.bin --part block --layers 2 --hidden 64 --warmup 1 --repeats 10
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+PLAN rank=0 local=25000 edges=501806 halo=92702 interior=108 send=92635 boundary=24892
+PLAN rank=1 local=25000 edges=500035 halo=92288 interior=141 send=92248 boundary=24859
+PLAN rank=2 local=25000 edges=500147 halo=92425 interior=126 send=92282 boundary=24874
+PLAN rank=3 local=25000 edges=498262 halo=92083 interior=140 send=92408 boundary=24860
+PLAN rank=4 local=25000 edges=500444 halo=92479 interior=127 send=92306 boundary=24873
+PLAN rank=5 local=25000 edges=498803 halo=92500 interior=132 send=92211 boundary=24868
+PLAN rank=6 local=25000 edges=498843 halo=92382 interior=114 send=92577 boundary=24886
+PLAN rank=7 local=25000 edges=500664 halo=92167 interior=128 send=92359 boundary=24872
+============ MPI 分布式 GNN 推理 ============
+图          : graph.bin
+节点/边     : 200000 / 3999004    特征维度: 64
+进程数      : 8    划分: block    层数: 2    隐层: 64
+跨进程边    : 1050426 / 3999004  (26.3%)
+halo 节点   : 合计 739026, 单进程最多 92702 (本地约 25000)
+划分+建计划 : 0.0286 s
+串行参考    : 1.6285 s (单进程整图 2 层)
+--------------------------------------------
+mpi1        中位 0.4828 s  最小 0.3390  最大 0.5728  加速比 3.37  效率 0.42  检查通过
+mpi2        中位 0.3695 s  最小 0.3362  最大 0.7335  加速比 4.41  效率 0.55  检查通过
+allgather   中位 0.4758 s  最小 0.4422  最大 0.5212  加速比 3.42  效率 0.43  检查通过

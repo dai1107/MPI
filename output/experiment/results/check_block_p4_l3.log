@@ -1,0 +1,23 @@
+$ mpirun -f hostfile_spread -np 4 ./main --graph tiny.bin --part block --layers 3 --hidden 11 --warmup 1 --repeats 10
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+
+Authorized users only. All activities may be monitored and reported.
+PLAN rank=0 local=51 edges=43 halo=14 interior=36 send=16 boundary=15
+PLAN rank=1 local=51 edges=60 halo=16 interior=38 send=13 boundary=13
+PLAN rank=2 local=51 edges=44 halo=15 interior=36 send=17 boundary=15
+PLAN rank=3 local=50 edges=51 halo=11 interior=40 send=10 boundary=10
+============ MPI 分布式 GNN 推理 ============
+图          : tiny.bin
+节点/边     : 203 / 198    特征维度: 7
+进程数      : 4    划分: block    层数: 3    隐层: 11
+跨进程边    : 64 / 198  (32.3%)
+halo 节点   : 合计 56, 单进程最多 16 (本地约 50)
+划分+建计划 : 0.0014 s
+串行参考    : 0.0001 s (单进程整图 3 层)
+--------------------------------------------
+mpi1        中位 0.0003 s  最小 0.0003  最大 0.0004  加速比 0.20  效率 0.05  检查通过
+mpi2        中位 0.0003 s  最小 0.0003  最大 0.0043  加速比 0.21  效率 0.05  检查通过
+allgather   中位 0.0005 s  最小 0.0005  最大 0.0045  加速比 0.13  效率 0.03  检查通过
